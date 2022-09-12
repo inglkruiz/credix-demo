@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Develop",
+      "dependsOn": [
+        "App"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "App",
+      "type": "shell",
+      "command": "yarn start app",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "isBackground": true
+    }
+  ]
+}
