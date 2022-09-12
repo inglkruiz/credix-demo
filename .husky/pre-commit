@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+yarn nx affected --target=test --parallel=true --maxParallel=4 --skip-nx-cache=true
