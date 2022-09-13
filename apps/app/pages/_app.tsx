@@ -6,9 +6,9 @@ function CustomApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Welcome to app!</title>
+        <title>Credix Demo</title>
       </Head>
-      <main>
+      <main className="tw-p-2">
         <Component {...pageProps} />
       </main>
     </>

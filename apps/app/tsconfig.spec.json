@@ -8,6 +8,7 @@
   },
   "include": [
     "jest.config.ts",
+    "jest-setup.ts",
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/*.test.tsx",
@@ -16,6 +17,6 @@
     "**/*.spec.js",
     "**/*.test.jsx",
     "**/*.spec.jsx",
-    "**/*.d.ts"
+    "**/*.d.ts",
   ]
 }
