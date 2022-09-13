@@ -4,7 +4,8 @@
     {
       "label": "Develop",
       "dependsOn": [
-        "App"
+        "App",
+        "API"
       ],
       "problemMatcher": []
     },
@@ -12,6 +13,16 @@
       "label": "App",
       "type": "shell",
       "command": "yarn start app",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "API",
+      "type": "shell",
+      "command": "yarn start api",
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
