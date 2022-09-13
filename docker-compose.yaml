@@ -3,15 +3,19 @@ version: '3.8'
 services:
   postgres:
     container_name: postgres_container
-    image: postgres
+    # Not using the base postgres image because we want to use uuid for ids and it needs to be enabled
+    build:
+      context: ./docker/postgres
+      dockerfile: Dockerfile
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-postgresdb}
       PGDATA: /data/postgres
     volumes:
        - postgres:/data/postgres
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     networks:
       - postgres
     restart: unless-stopped

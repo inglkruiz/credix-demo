@@ -11,6 +11,9 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "4.7.0",
+    "@mikro-orm/core": "5.4.2",
+    "@mikro-orm/nestjs": "5.1.2",
+    "@mikro-orm/postgresql": "5.4.2",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
