@@ -12,8 +12,21 @@ import {
   Table,
   Typography,
 } from 'antd';
+import axios from 'axios';
 import type { MouseEventHandler } from 'react';
 import React, { createRef, useState } from 'react';
+
+if (!process.env.NEXT_PUBLIC_API_URL) {
+  throw Error('NEXT_PUBLIC_API_URL is not set');
+}
+
+const http = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+});
+
+export function createFormDefinition(payload) {
+  return http.post('/forms/definitions', payload);
+}
 
 const columns: typeof Table.defaultProps.columns = [
   {
@@ -72,8 +85,13 @@ export const Index: React.FC = () => {
     setOpen(false);
   };
 
-  const onFinish: FormProps['onFinish'] = (values) => {
+  const onFinish: FormProps['onFinish'] = async (values) => {
     console.log('Received values of form:', values);
+    const createFormDefinitionResponse = await createFormDefinition(values);
+    console.log(
+      'createFormDefinitionResponse API:',
+      createFormDefinitionResponse
+    );
   };
 
   const onReset: MouseEventHandler<HTMLElement> = () => {
