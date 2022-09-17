@@ -3,7 +3,12 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
+    "api-entities": "libs/api/entities",
+    "api-types": "libs/api/types",
     "app": "apps/app",
-    "app-e2e": "apps/app-e2e"
+    "app-components": "libs/app/components",
+    "app-e2e": "apps/app-e2e",
+    "app-utils": "libs/app/utils",
+    "db-schema": "apps/db-schema"
   }
 }

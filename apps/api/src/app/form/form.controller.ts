@@ -1,4 +1,12 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateFormDefinitionDto } from './dto/create-form-definition.dto';
 import { FormService } from './form.service';
@@ -10,9 +18,21 @@ export class FormController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post('definitions')
-  async createFormDefinition(
+  createFormDefinition(
     @Body() createFormDefinitionDto: CreateFormDefinitionDto
   ) {
     return this.formDefinitionService.create(createFormDefinitionDto);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('definitions')
+  listFormDefinition() {
+    return this.formDefinitionService.list();
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get(':formId')
+  getFormDefinition(@Param('formId') formId: string) {
+    return this.formDefinitionService.get(formId);
   }
 }

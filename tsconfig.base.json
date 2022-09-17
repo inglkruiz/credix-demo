@@ -14,7 +14,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@credix/api/entities": ["libs/api/entities/src/index.ts"],
+      "@credix/api/types": ["libs/api/types/src/index.ts"],
+      "@credix/app/components": ["libs/app/components/src/index.ts"],
+      "@credix/app/utils": ["libs/app/utils/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

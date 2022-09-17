@@ -1,4 +1,4 @@
-import { EntityRepository } from '@mikro-orm/postgresql'; // or any other driver package
+import { EntityRepository } from '@mikro-orm/postgresql';
 import { FormDefinitionEntity } from './form-definition.entity';
 
 export class FormDefinitionRepository extends EntityRepository<FormDefinitionEntity> {}

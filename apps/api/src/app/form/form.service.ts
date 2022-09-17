@@ -1,22 +1,72 @@
+import {
+  FormDefinitionRepository,
+  FormQuestionRepository,
+} from '@credix/api/entities';
+import { ListFormDefinitionsResponse } from '@credix/api/types';
 import { Injectable } from '@nestjs/common';
 import { CreateFormDefinitionDto } from './dto/create-form-definition.dto';
-import { FormDefinitionRepository } from './form-definition.repository';
 
 @Injectable()
 export class FormService {
   constructor(
-    private readonly formDefinitionRepository: FormDefinitionRepository
+    private readonly formDefinitionRepository: FormDefinitionRepository,
+    private readonly formQuestionRepository: FormQuestionRepository
   ) {}
 
-  public async create(createFormDefinitionDto: CreateFormDefinitionDto) {
-    const entity = this.formDefinitionRepository.create(
-      createFormDefinitionDto
+  public async list(): Promise<ListFormDefinitionsResponse> {
+    const [data, counter] = await this.formDefinitionRepository.findAndCount(
+      {},
+      {
+        populate: ['questions.id'],
+        fields: ['id', 'name', 'description', 'questions.id'],
+      }
     );
 
-    this.formDefinitionRepository.persist(entity);
+    return [
+      data.map((item) => {
+        const { id, name, description, questions } = item;
+        return {
+          id,
+          name,
+          description,
+          numQuestions: questions.length,
+        };
+      }),
+      counter,
+    ];
+  }
 
-    await this.formDefinitionRepository.flush();
+  public async get(id: string) {
+    return await this.formDefinitionRepository.findOneOrFail(
+      {
+        id,
+      },
+      {
+        populate: ['questions'],
+      }
+    );
+  }
 
-    console.log(entity);
+  public async create(createFormDefinitionDto: CreateFormDefinitionDto) {
+    const formDefinitionEntity = this.formDefinitionRepository.create({
+      name: createFormDefinitionDto.name,
+      description: createFormDefinitionDto.description,
+    });
+
+    for (const item of createFormDefinitionDto.questions) {
+      formDefinitionEntity.questions.add(
+        this.formQuestionRepository.create({
+          question: item.question,
+          answerType: item.answerType,
+          formDefinition: formDefinitionEntity,
+        })
+      );
+    }
+
+    await this.formDefinitionRepository.persistAndFlush(formDefinitionEntity);
+
+    return {
+      id: formDefinitionEntity.id,
+    };
   }
 }

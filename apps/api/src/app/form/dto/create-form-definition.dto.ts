@@ -1,3 +1,9 @@
+import type {
+  CreateFormDefinition,
+  CreateFormDefinitionQuestion,
+  FormQuestionAnswerType,
+} from '@credix/api/types';
+import { FormQuestionAnswerTypeEnum } from '@credix/api/types';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
@@ -10,12 +16,8 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import {
-  FormQuestionAnswerType,
-  FormQuestionAnswerTypeEnum,
-} from '../enums/form-question-answer-type.enum';
 
-class CreateFormDefinitionQuestionDto {
+class CreateFormDefinitionQuestionDto implements CreateFormDefinitionQuestion {
   @ApiProperty({
     type: String,
   })
@@ -29,7 +31,7 @@ class CreateFormDefinitionQuestionDto {
   answerType!: FormQuestionAnswerType;
 }
 
-export class CreateFormDefinitionDto {
+export class CreateFormDefinitionDto implements CreateFormDefinition {
   @ApiProperty({
     type: String,
   })

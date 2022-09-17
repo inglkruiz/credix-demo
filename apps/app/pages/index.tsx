@@ -1,5 +1,10 @@
 // import styles from './index.module.css';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  ListFormDefinitionsResponse,
+  ListFormDefinitionsResponseData,
+} from '@credix/api/types';
+import { createFormDefinition, getFormDefinitions } from '@credix/app/utils';
 import type { FormInstance, FormProps } from 'antd';
 import {
   Button,
@@ -12,28 +17,25 @@ import {
   Table,
   Typography,
 } from 'antd';
-import axios from 'axios';
-import type { MouseEventHandler } from 'react';
-import React, { createRef, useState } from 'react';
+import type { ColumnsType } from 'antd/es/table';
+import Link from 'next/link';
+import React, {
+  createRef,
+  MouseEventHandler,
+  useEffect,
+  useState,
+} from 'react';
 
-if (!process.env.NEXT_PUBLIC_API_URL) {
-  throw Error('NEXT_PUBLIC_API_URL is not set');
-}
-
-const http = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-});
-
-export function createFormDefinition(payload) {
-  return http.post('/forms/definitions', payload);
-}
-
-const columns: typeof Table.defaultProps.columns = [
+const columns: ColumnsType<ListFormDefinitionsResponseData> = [
   {
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
-    render: (text) => <a>{text}</a>,
+    render: (text, record) => (
+      <Link href={`/forms/${record.id}/entry`}>
+        <a>{text}</a>
+      </Link>
+    ),
   },
   {
     title: 'Description',
@@ -46,26 +48,6 @@ const columns: typeof Table.defaultProps.columns = [
     key: 'numQuestions',
   },
 ];
-const data = [
-  {
-    key: '1',
-    name: 'Form 1',
-    description: '',
-    numQuestions: 1,
-  },
-  {
-    key: '2',
-    name: 'Form 2',
-    description: '',
-    numQuestions: 2,
-  },
-  {
-    key: '3',
-    name: 'Form 3',
-    description: '',
-    numQuestions: 3,
-  },
-];
 
 // Component shortcuts
 const FormItem = Form.Item;
@@ -74,8 +56,27 @@ const TypographyTitle = Typography.Title;
 const InputTextArea = Input.TextArea;
 
 export const Index: React.FC = () => {
+  const [formListData, setFormListData] = useState<ListFormDefinitionsResponse>(
+    [[], 0]
+  );
+  const [formListLoading, setFormListLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const formRef = createRef<FormInstance>();
+
+  useEffect(() => {
+    const fetchFormList = async () => {
+      setFormListLoading(true);
+      const response = await getFormDefinitions();
+      if (response.status === 200) {
+        setFormListData(response.data);
+      }
+      setFormListLoading(false);
+    };
+
+    fetchFormList();
+  }, []);
+
+  if (formListLoading) return <p>Loading...</p>;
 
   const openNewForm = () => {
     setOpen(true);
@@ -85,16 +86,14 @@ export const Index: React.FC = () => {
     setOpen(false);
   };
 
-  const onFinish: FormProps['onFinish'] = async (values) => {
-    console.log('Received values of form:', values);
+  const finish: FormProps['onFinish'] = async (values) => {
     const createFormDefinitionResponse = await createFormDefinition(values);
-    console.log(
-      'createFormDefinitionResponse API:',
-      createFormDefinitionResponse
-    );
+    if (createFormDefinitionResponse.status === 201) {
+      setOpen(false);
+    }
   };
 
-  const onReset: MouseEventHandler<HTMLElement> = () => {
+  const reset: MouseEventHandler<HTMLElement> = () => {
     formRef.current.resetFields();
   };
 
@@ -108,7 +107,7 @@ export const Index: React.FC = () => {
           </Button>,
         ]}
       />
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={formListData[0]} rowKey="id" />
       <Drawer
         title="New Form Definition"
         placement={'left'}
@@ -119,7 +118,7 @@ export const Index: React.FC = () => {
           name="formDefinition"
           autoComplete="off"
           layout="vertical"
-          onFinish={onFinish}
+          onFinish={finish}
           ref={formRef}
         >
           <FormItem
@@ -202,7 +201,7 @@ export const Index: React.FC = () => {
                   </Button>
                 </FormItem>
                 <FormItem>
-                  <Button htmlType="button" onClick={onReset} block>
+                  <Button htmlType="button" onClick={reset} block>
                     Reset
                   </Button>
                 </FormItem>
