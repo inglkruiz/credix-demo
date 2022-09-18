@@ -1,94 +1,77 @@
 
 
-# Credix
+# Credix Demo
 
-This project was generated using [Nx](https://nx.dev).
+This repository has been scaffolded using [Nrwl Nx](https://nx.dev).
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+## Install dependencies
 
-🔎 **Smart, Fast and Extensible Build System**
+The project uses [yarn](https://yarnpkg.com) as dependency manager. Once you have installed `yarn`, you can install the dependencies of this repository by running the following command:
 
-## Adding capabilities to your workspace
+```bash
+yarn
+```
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## Run the project locally
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+### Postgres DB
 
-Below are our core plugins:
+Copy/Paste the file `.env`, rename it to `.env.local`, and replace the content of the file with the following environment variables.
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+```txt
+POSTGRES_PORT=5432
+POSTGRES_USER=credix
+POSTGRES_PASSWORD=credixpw
+POSTGRES_DB=credix
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+PGADMIN_DEFAULT_EMAIL=dev@credix.finance
+PGADMIN_DEFAULT_PASSWORD=credixpw
+PGADMIN_PORT=5050
 
-## Generate an application
+API_POSTGRES_HOST=localhost
+API_HOST=localhost
+API_PORT=3333
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+APP_HOST=localhost
+APP_PORT=4200
+NEXT_PUBLIC_API_URL=http://localhost:3333/api
 
-> You can use any of the plugins above to generate applications as well.
+```
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+Open a terminal and start the Database.
 
-## Generate a library
+```bash
+docker compose --env-file ./.env.local up --detach
+```
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+In the same terminal run the db-schema app for generating the DB schema.
 
-> You can also use any of the plugins above to generate libraries as well.
+```bash
+yarn nx run db-schema:serve:production
+```
 
-Libraries are shareable across libraries and applications. They can be imported from `@credix/mylib`.
+Kill the process after it finishes.
 
-## Development server
+### Web App
 
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+Open a new terminal and start the Web App.
 
-## Code scaffolding
+```bash
+yarn nx serve app
+```
 
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
+### API
 
-## Build
+Open a new terminal and start the Web App.
 
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```bash
+yarn nx serve api
+```
 
-## Running unit tests
+You can save some time and clicks if you are using VSCode, just run the Task Develop > [.vscode/tasks.json](.vscode/tasks.json)
 
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+Now you're ready to go:
 
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+* The Web App runs on http://localhost:4200
+* The API runs on http://localhost:3333/api You can explore the OpenAPI documentation at http://localhost:3333/api/docs
+* PgAdmin runs on http://localhost:5050 Use the password you set at `PGADMIN_DEFAULT_PASSWORD` for accessing the UI.
