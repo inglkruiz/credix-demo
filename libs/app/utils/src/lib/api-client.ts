@@ -1,7 +1,10 @@
-import {
+import type {
   CreateFormDefinition,
+  CreateFormEntry,
   GetFormDefinitionResponse,
+  GetFormEntryResponse,
   ListFormDefinitionsResponse,
+  ListFormEntriesResponse,
 } from '@credix/api/types';
 import axios from 'axios';
 
@@ -26,9 +29,18 @@ export function getFormDefinition(id: string) {
 }
 
 export function createFormDefinitionEntry(
-  id: string,
-  // TODO: Fix TS type
-  payload: Record<string, unknown>
+  formId: string,
+  payload: CreateFormEntry
 ) {
-  return httpClient.post(`/forms/${id}/entries`, payload);
+  return httpClient.post(`/forms/${formId}/entries`, payload);
+}
+
+export function getFormEntries(formId: string) {
+  return httpClient.get<ListFormEntriesResponse>(`/forms/${formId}/entries`);
+}
+
+export function getFormEntry(formId: string, entryId: string) {
+  return httpClient.get<GetFormEntryResponse>(
+    `/forms/${formId}/entries/${entryId}`
+  );
 }

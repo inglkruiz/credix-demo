@@ -10,7 +10,10 @@ import {
 import { FormDefinitionRepository } from './form-definition.repository';
 import { FormQuestionEntity } from './form-question.entity';
 
-@Entity({ customRepository: () => FormDefinitionRepository })
+@Entity({
+  tableName: 'FormDefinition',
+  customRepository: () => FormDefinitionRepository,
+})
 export class FormDefinitionEntity
   implements FormDefinition<Collection<FormQuestionEntity>>
 {

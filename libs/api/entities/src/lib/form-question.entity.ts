@@ -14,7 +14,10 @@ import {
 import { FormDefinitionEntity } from './form-definition.entity';
 import { FormQuestionRepository } from './form-question.repository';
 
-@Entity({ customRepository: () => FormQuestionRepository })
+@Entity({
+  tableName: 'FormQuestion',
+  customRepository: () => FormQuestionRepository,
+})
 export class FormQuestionEntity implements FormQuestion {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
   id!: string;

@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FormService } from './form.service';
+import { ApiFormService } from './api-form.service';
 
-describe.skip('FormService', () => {
-  let service: FormService;
+describe.skip('ApiFormService', () => {
+  let service: ApiFormService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FormService],
+      providers: [ApiFormService],
     }).compile();
 
-    service = module.get<FormService>(FormService);
+    service = module.get<ApiFormService>(ApiFormService);
   });
 
   it('should be defined', () => {

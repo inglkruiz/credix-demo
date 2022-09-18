@@ -18,11 +18,11 @@ export interface FormQuestion {
   answerType: FormQuestionAnswerType;
 }
 
-export interface FormDefinition<QuestionsType> {
+export interface FormDefinition<T> {
   id: string;
   name: string;
   description?: string;
-  questions: QuestionsType;
+  questions: T;
 }
 
 export type GetFormDefinitionResponse = FormDefinition<Array<FormQuestion>>;
@@ -33,3 +33,37 @@ export type CreateFormDefinition = Omit<
   FormDefinition<Array<CreateFormDefinitionQuestion>>,
   'id'
 >;
+
+export interface FormEntryAnswer {
+  id: string;
+  answer: string;
+  question: FormQuestion;
+}
+
+export interface FormEntry<T> {
+  id: string;
+  answers: T;
+}
+
+export type CreateFormEntryAnswer = Omit<FormEntryAnswer, 'id' | 'question'> & {
+  questionId: string;
+  answerType: FormQuestionAnswerType;
+};
+
+export type CreateFormEntry = Omit<
+  FormEntry<Array<CreateFormEntryAnswer>>,
+  'id'
+>;
+
+export type FormEntryReponseData = FormEntry<Array<FormEntryAnswer>>;
+
+export interface ListFormEntriesResponseData {
+  formName: string;
+  entries: [FormEntryReponseData[], number];
+}
+
+export type ListFormEntriesResponse = ListFormEntriesResponseData;
+
+export type GetFormEntryResponse = FormEntryReponseData & {
+  formDefinition: Omit<FormDefinition<Array<FormQuestion>>, 'questions'>;
+};

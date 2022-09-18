@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@credix/api/entities": ["libs/api/entities/src/index.ts"],
+      "@credix/api/form": ["libs/api/form/src/index.ts"],
       "@credix/api/types": ["libs/api/types/src/index.ts"],
       "@credix/app/components": ["libs/app/components/src/index.ts"],
       "@credix/app/utils": ["libs/app/utils/src/index.ts"]

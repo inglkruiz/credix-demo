@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FormController } from './form.controller';
+import { ApiFormController } from './api-form.controller';
 
-describe.skip('FormController', () => {
-  let controller: FormController;
+describe.skip('ApiFormService', () => {
+  let controller: ApiFormController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [FormController],
+      controllers: [ApiFormController],
     }).compile();
 
-    controller = module.get<FormController>(FormController);
+    controller = module.get<ApiFormController>(ApiFormController);
   });
 
   it('should be defined', () => {

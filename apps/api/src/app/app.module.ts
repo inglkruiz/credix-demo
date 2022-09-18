@@ -1,9 +1,9 @@
+import { ApiFormModule } from '@credix/api/form';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { FormModule } from './form/form.module';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { FormModule } from './form/form.module';
       autoLoadEntities: true,
       debug: true,
     }),
-    FormModule,
+    ApiFormModule,
   ],
   controllers: [AppController],
   providers: [AppService],

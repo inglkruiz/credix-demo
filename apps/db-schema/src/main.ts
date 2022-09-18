@@ -1,9 +1,19 @@
-import { FormDefinitionEntity, FormQuestionEntity } from '@credix/api/entities';
+import {
+  FormDefinitionEntity,
+  FormEntryAnswerEntity,
+  FormEntryEntity,
+  FormQuestionEntity,
+} from '@credix/api/entities';
 import { MikroORM } from '@mikro-orm/core';
 
 (async () => {
   const orm = await MikroORM.init({
-    entities: [FormDefinitionEntity, FormQuestionEntity],
+    entities: [
+      FormDefinitionEntity,
+      FormQuestionEntity,
+      FormEntryEntity,
+      FormEntryAnswerEntity,
+    ],
     type: 'postgresql',
     host: process.env.API_POSTGRES_HOST,
     port: +process.env.POSTGRES_PORT,
@@ -37,4 +47,10 @@ import { MikroORM } from '@mikro-orm/core';
   await generator.clearDatabase(); // removes all data
 
   await orm.close(true);
+
+  /**
+   * It does not work. Kill process manually after it closes the connection
+   * @see https://github.com/nrwl/nx/issues/9239
+   */
+  // process.exit()
 })();

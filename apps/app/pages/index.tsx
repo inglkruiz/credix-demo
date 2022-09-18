@@ -1,41 +1,35 @@
 // import styles from './index.module.css';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import {
+import type {
+  CreateFormDefinition,
   ListFormDefinitionsResponse,
   ListFormDefinitionsResponseData,
 } from '@credix/api/types';
 import { createFormDefinition, getFormDefinitions } from '@credix/app/utils';
-import type { FormInstance, FormProps } from 'antd';
 import {
   Button,
   Divider,
   Drawer,
   Form,
+  FormInstance,
+  FormProps,
   Input,
   PageHeader,
   Select,
+  Space,
   Table,
   Typography,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import Link from 'next/link';
-import React, {
-  createRef,
-  MouseEventHandler,
-  useEffect,
-  useState,
-} from 'react';
+import type { MouseEventHandler } from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 
 const columns: ColumnsType<ListFormDefinitionsResponseData> = [
   {
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
-    render: (text, record) => (
-      <Link href={`/forms/${record.id}/entry`}>
-        <a>{text}</a>
-      </Link>
-    ),
   },
   {
     title: 'Description',
@@ -46,6 +40,20 @@ const columns: ColumnsType<ListFormDefinitionsResponseData> = [
     title: '# Questions',
     dataIndex: 'numQuestions',
     key: 'numQuestions',
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => (
+      <Space size="middle">
+        <Link href={`/forms/${record.id}/entry`}>
+          <a>Add Entry</a>
+        </Link>
+        <Link href={`/forms/${record.id}/entries`}>
+          <a>View Entries</a>
+        </Link>
+      </Space>
+    ),
   },
 ];
 
@@ -86,7 +94,9 @@ export const Index: React.FC = () => {
     setOpen(false);
   };
 
-  const finish: FormProps['onFinish'] = async (values) => {
+  const finish: FormProps<CreateFormDefinition>['onFinish'] = async (
+    values
+  ) => {
     const createFormDefinitionResponse = await createFormDefinition(values);
     if (createFormDefinitionResponse.status === 201) {
       setOpen(false);
